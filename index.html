@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>毕嘉骏喜欢苗佳琪</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #fbcfe8, #f9a8d4);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      overflow-x: hidden;
+      position: relative;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 700px;
+      width: 90%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      z-index: 1;
+    }
+    .heart-line {
+      font-size: 1.5rem;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0.7; transform: scale(1); }
+    }
+    .floating-heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff4d4d;
+      transform: rotate(-45deg);
+      animation: float 10s linear infinite;
+      z-index: 0;
+    }
+    .floating-heart::before,
+    .floating-heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff4d4d;
+      border-radius: 50%;
+    }
+    .floating-heart::before {
+      top: -10px;
+      left: 0;
+    }
+    .floating-heart::after {
+      top: 0;
+      left: 10px;
+    }
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(-45deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(-45deg);
+        opacity: 0;
+      }
+    }
+    .hidden {
+      display: none;
+    }
+    .love-title {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #fff1f2;
+    }
+    .love-icons {
+      font-size: 2.5rem;
+      color: #f472b6;
+      margin-bottom: 1rem;
+    }
+    .vote-btn {
+      background: #ec4899;
+      color: white;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      transition: all 0.3s ease;
+    }
+    .vote-btn:hover {
+      background: #db2777;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Page 1 -->
+    <div id="page1">
+      <h1 class="text-3xl font-bold mb-6">毕嘉骏喜欢苗佳琪</h1>
+      <button onclick="showHearts()" class="explore-button bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-6 rounded-lg transition-transform hover:scale-105">探索</button>
+      <div id="heart-content" class="hidden mt-6 space-y-1"></div>
+      <button id="next-page-button" onclick="showPage2()" class="hidden mt-6 bg-fuchsia-500 hover:bg-fuchsia-600 text-white font-bold py-2 px-4 rounded-lg">下一页</button>
+    </div>
+
+    <!-- Page 2 -->
+    <div id="page2" class="hidden">
+      <div class="love-icons">
+        <i class="fas fa-heart"></i> <i class="fas fa-kiss-wink-heart"></i> <i class="fas fa-heartbeat"></i>
+      </div>
+      <h2 class="love-title mb-4">觉黄他们</h2>
+      <div class="text-pink-200 text-xl mb-6">
+        毕嘉骏 <i class="fas fa-heart"></i> 苗佳琪 <br>
+       
+      </div>
+      <form method="POST" action="/vote">
+        <input type="hidden" name="ip" value="{{user_ip}}">
+        <div class="flex flex-col space-y-4">
+          <button name="choice" value="A" class="vote-btn">A. 报告 Teacher</button>
+          <button name="choice" value="B" class="vote-btn">B.  焦黄他们</button>
+          <button name="choice" value="C" class="vote-btn">C. 看着什么也没有</button>
+        </div>
+      </form>
+      <p id="vote-result" class="mt-6 text-lg"></p>
+    </div>
+  </div>
+
+  <script>
+    function showHearts() {
+      const heartContent = document.getElementById('heart-content');
+      heartContent.innerHTML = '';
+      const lines = [];
+      for (let i = 1; i <= 50; i++) {
+        const emojis = ['💖','💘','💕','💗','💓','💞','💝','💟','🌸','🌹','🎁','💌','👫','💑'];
+        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+        lines.push(`<div class="heart-line">${emoji} 毕嘉骏 ❤️ 苗佳琪 ${emoji}</div>`);
+      }
+      heartContent.innerHTML = lines.join('');
+      heartContent.classList.remove('hidden');
+      document.querySelector('.explore-button').classList.add('hidden');
+      document.getElementById('next-page-button').classList.remove('hidden');
+    }
+
+    function showPage2() {
+      document.getElementById('page1').classList.add('hidden');
+      document.getElementById('page2').classList.remove('hidden');
+    }
+
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'floating-heart';
+      heart.style.left = `${Math.random() * 100}vw`;
+      heart.style.animationDuration = `${Math.random() * 5 + 5}s`;
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 10000);
+    }
+
+    setInterval(createFloatingHeart, 400);
+  </script>
+</body>
+</html>
